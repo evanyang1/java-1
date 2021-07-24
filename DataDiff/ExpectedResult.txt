@@ -1,0 +1,70 @@
+======================================
+------ Data Source 1 Statistics ------
+Total number of ref mapping items: 11
+Total duplicate items: 1
+Number of codes only in Data Source 1: 2
+
+======================================
+------ Data Source 2 Statistics ------
+Total number of ref mapping items: 10
+Total duplicate items: 1
+Number of codes only in Data Source 2: 1
+
+**************************************
+Detailed Report:
+
+======================================
+------ 3 number of codes with both different value and activeId, list them grouped by consumerType
+ConsumerType: CT1
+	Code: CT1_Code2
+		DataSource1:	activeId=Y
+		DataSource2:	activeId=N
+		DataSource1:	value=Value2
+		DataSource2:	value=Value9	
+	Code: CT1_Code4
+		DataSource1:	activeId=N
+		DataSource2:	activeId=Y
+		DataSource1:	value=Value4
+		DataSource2:	value=Value9
+ConsumerType: CT2
+	Code: CT2_Code2
+		DataSource1:	activeId=Y
+		DataSource2:	activeId=N
+		DataSource1:	value=Value2
+		DataSource2:	value=Value9	
+
+======================================
+------ 1 number of codes with same value but different activeId, grouped by consumerType
+ConsumerType: CT1
+	Code: CT1_3  value: Value3
+		DataSource1:	activeId=Y
+		DataSource2:	activeId=N
+	
+======================================
+------ 1 number of codes with same activeId but different values, grouped by consumerType
+ConsumerType: CT2
+	Code: CT2_Code3  activeId: Y
+		DataSource1:	value=Value9
+		DataSource2:	value=Value3
+
+======================================
+------ 1 number of codes only appear in Data Source 1, grouped by consumer type
+ConsumerType: CT2
+	Code=CT2_Code4
+	Code=CT2_Code5
+	
+======================================
+------ 1 number of codes only appear in Data Source 2, grouped by consumer type
+ConsumerType: CT1
+	Code=CT1_Code6
+	
+======================================
+------ 1 number of codes that are duplicates in Data Source 1
+ConsumerType: CT2
+	Code=CT2_Code5, value=Value5, activeId=Y
+
+======================================
+------ 1 number of codes that are duplicates in Data Source 2
+ConsumerType: CT1
+	code=CT1_Code1, value=Value1, activeId=Y
+
