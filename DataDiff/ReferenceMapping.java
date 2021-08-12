@@ -4,6 +4,14 @@ public class ReferenceMapping {
     String ct_code;
     String value;
 
+    // constructor
+    public ReferenceMapping(boolean active, String consumerType, String ct_code, String value) {
+        this.active = active;
+        this.consumerType = consumerType;
+        this.ct_code = ct_code;
+        this.value = value;
+    }
+
     // getters
     public boolean getActive() { return active; }
     public String getConsumerType() { return consumerType; }
