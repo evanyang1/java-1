@@ -3,7 +3,19 @@ import javax.xml.parsers.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.xml.XMLConstants;
 
 // ReferenceMapping(boolean active, String consumerType, String ct_code, String value)
 public class Parse {
@@ -15,6 +27,25 @@ public class Parse {
         try {
             File xml = new File("DataSource1.xml");
             File dsv = new File("DataSource2.dsv"); 
+
+            // xml file
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            // optional, but recommended
+            // process XML securely, avoid attacks like XML External Entities (XXE)
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new File("DataSource1.xml"));
+            doc.getDocumentElement().normalize();
+
+            NodeList xmlNodeList = doc.getElementsByTagName("ref:refMapping");
+            for (int i = 0; i < xmlNodeList.getLength(); i++) {
+                Node node = xmlNodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                }
+            }
 
             // dsv file
             BufferedReader br = new BufferedReader(new FileReader(dsv));
@@ -40,10 +71,7 @@ public class Parse {
             }
             br.close();
 
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xml);
-            doc.getDocumentElement().normalize();
+            
         } catch(Exception e) {
             e.printStackTrace();
         }
