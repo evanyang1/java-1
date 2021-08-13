@@ -44,6 +44,27 @@ public class Parse {
                 Node node = xmlNodeList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
+
+                    Boolean active = stringYesOrNoToBoolean(element.getElementsByTagName("ref:activeId").item(0).getTextContent());
+                    String consumerType = element.getElementsByTagName("ref:consumerType").item(0).getTextContent();
+                    String ct_code = element.getElementsByTagName("ref:code").item(0).getTextContent();
+                    String value = element.getElementsByTagName("ref:value").item(0).getTextContent();
+
+                    ReferenceMapping rm = new ReferenceMapping(
+                        active,
+                        consumerType,
+                        ct_code,
+                        value
+                    );
+                    ArrayList<ReferenceMapping> arr;
+                    String key = value; // this is ironic but still.
+                    if (map1.containsKey(key)) {
+                        //append
+                        arr = map1.get(key);
+                    } else arr = new ArrayList<>();
+                    arr.add(rm));
+                    map2.put(key, arr);
+
                 }
             }
 
@@ -61,12 +82,14 @@ public class Parse {
                 );
                 // add to map
                 String key = parts[2];
+                ArrayList<ReferenceMapping> arr;
                 if (map2.containsKey(key)) {
                     //append
-                    ArrayList<ReferenceMapping> arr = map2.get(key);
-                    arr.add(rmapping);
-                    map2.put(key, arr);
-                }
+                    arr = map2.get(key);
+                } else arr = new ArrayList<>();
+                arr.add(rmapping));
+                map2.put(key, arr);
+
 
             }
             br.close();
@@ -81,5 +104,8 @@ public class Parse {
         // 0 -> false, true otherwise
         int n = Integer.parseInt(str);
         return (n == 0) ? false : true;
+    }
+    public static Boolean stringYesOrNoToBoolean(String str) {
+        return (str.equals("Y")) ? true : false;
     }
 }
