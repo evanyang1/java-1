@@ -62,7 +62,7 @@ public class Parse {
                         //append
                         arr = map1.get(key);
                     } else arr = new ArrayList<>();
-                    arr.add(rm));
+                    arr.add(rm);
                     map2.put(key, arr);
 
                 }
@@ -87,7 +87,7 @@ public class Parse {
                     //append
                     arr = map2.get(key);
                 } else arr = new ArrayList<>();
-                arr.add(rmapping));
+                arr.add(rmapping);
                 map2.put(key, arr);
 
 
