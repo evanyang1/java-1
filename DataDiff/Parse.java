@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.XMLConstants;
+//import ReferenceMapping;
 
 // ReferenceMapping(boolean active, String consumerType, String ct_code, String value)
 public class Parse {
@@ -76,7 +77,7 @@ public class Parse {
                 // ordering is based on constructor definition and dsv formatting
                 ReferenceMapping rmapping = new ReferenceMapping(
                     stringNumberToBoolean(parts[3]),
-                    parts[0],
+                    parts[0],                                                                                   
                     parts[1],
                     parts[2]
                 );
@@ -98,11 +99,14 @@ public class Parse {
         } catch(Exception e) {
             e.printStackTrace();
         }
-
+        
     }
+
+
+
     public static Boolean stringNumberToBoolean(String str) {
         // 0 -> false, true otherwise
-        int n = Integer.parseInt(str);
+        int n = Integer.parseInt(str.strip());
         return (n == 0) ? false : true;
     }
     public static Boolean stringYesOrNoToBoolean(String str) {
