@@ -9,6 +9,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.PrintWriter; // write to txt file
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,17 +23,13 @@ import javax.xml.XMLConstants;
 // ReferenceMapping(boolean active, String consumerType, String ct_code, String value)
 public class Parse {
     public static void main (String[] args) {
-        // use value as key (4th param) (ironic but this is closest to one to one)
+        
         HashMap<String, ArrayList<ReferenceMapping>> map1 = new HashMap<>();
         HashMap<String, ArrayList<ReferenceMapping>> map2 = new HashMap<>();
 
         try {
-            File xml = new File("DataSource1.xml");
-            File dsv = new File("DataSource2.dsv"); 
-
             // xml file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
             // optional, but recommended
             // process XML securely, avoid attacks like XML External Entities (XXE)
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -50,7 +48,7 @@ public class Parse {
                     String consumerType = element.getElementsByTagName("ref:consumerType").item(0).getTextContent();
                     String ct_code = element.getElementsByTagName("ref:code").item(0).getTextContent();
                     String value = element.getElementsByTagName("ref:value").item(0).getTextContent();
-
+                    
                     ReferenceMapping rm = new ReferenceMapping(
                         active,
                         consumerType,
@@ -58,18 +56,19 @@ public class Parse {
                         value
                     );
                     ArrayList<ReferenceMapping> arr;
-                    String key = value; // this is ironic but still.
+                    String key = ct_code; // ct_code as key
                     if (map1.containsKey(key)) {
                         //append
                         arr = map1.get(key);
                     } else arr = new ArrayList<>();
                     arr.add(rm);
-                    map2.put(key, arr);
+                    map1.put(key, arr);
 
                 }
             }
 
             // dsv file
+            File dsv = new File("DataSource2.dsv"); 
             BufferedReader br = new BufferedReader(new FileReader(dsv));
             String s;
             while ((s = br.readLine()) != null) {
@@ -82,7 +81,7 @@ public class Parse {
                     parts[2]
                 );
                 // add to map
-                String key = parts[2];
+                String key = parts[1];
                 ArrayList<ReferenceMapping> arr;
                 if (map2.containsKey(key)) {
                     //append
@@ -93,15 +92,35 @@ public class Parse {
 
 
             }
-            br.close();
+            br.close();   
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
-            
+        try {
+            PrintWriter out = new PrintWriter("output.txt");
+            out.println("======================================");
+            out.println("------ Data Source 1 Statistics ------");
+            for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
+
+            }
+
+            out.println("======================================");
+            out.println("------ Data Source 2 Statistics ------");
+            for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map2.entrySet()) {
+                //System.out.println(entry.getKey());
+                //System.out.println(entry.getValue());
+
+            }
+
+            out.close();
         } catch(Exception e) {
             e.printStackTrace();
         }
         
     }
-
 
 
     public static Boolean stringNumberToBoolean(String str) {
