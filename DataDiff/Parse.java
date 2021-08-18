@@ -1,13 +1,18 @@
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+//import ReferenceMapping.SortReferenceMapping;
 
 import java.io.PrintWriter; // write to txt file
 
@@ -100,18 +105,36 @@ public class Parse {
         try {
             PrintWriter out = new PrintWriter("output.txt");
             out.println("======================================");
-            out.println("------ Data Source 1 Statistics ------");
+            HashSet<ReferenceMapping> setDuplicates1 = new HashSet<>();
+            int numDuplicates1 = 0;
+            int numElements1 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
-                System.out.println(entry.getKey());
-                System.out.println(entry.getValue());
-
+                numElements1 += entry.getValue().size();
+                if (entry.getValue().size() > 1) {
+                    // check for duplicates
+                    int curSizeHashSet = setDuplicates1.size();
+                    ArrayList<ReferenceMapping> copy = (ArrayList<ReferenceMapping>) entry.getValue();
+                    //Collections.sort(copy, null);
+                    for (int i = 0; i < copy.size() - 1; i++) {
+                        for (int j = i + 1; j < copy.size(); j++) {
+                            if (copy.get(i).equals( copy.get(j) )) {
+                                setDuplicates1.add(copy.get(i));
+                            }
+                        }
+                    }
+                    numDuplicates1 += (setDuplicates1.size() - curSizeHashSet);
+                }
             }
+            out.println("------ Data Source 1 Statistics ------");
+            out.println("Total number of ref mapping items: " + numElements1);
+            out.println("Total duplicate items: " + numDuplicates1);
+
 
             out.println("======================================");
             out.println("------ Data Source 2 Statistics ------");
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map2.entrySet()) {
-                //System.out.println(entry.getKey());
-                //System.out.println(entry.getValue());
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
 
             }
 

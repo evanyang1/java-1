@@ -1,4 +1,6 @@
 ======================================
 ------ Data Source 1 Statistics ------
+Total number of ref mapping items: 11
+Total duplicate items: 0
 ======================================
 ------ Data Source 2 Statistics ------

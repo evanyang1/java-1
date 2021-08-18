@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class ReferenceMapping {
     boolean active;
     String consumerType;
@@ -47,4 +49,15 @@ public class ReferenceMapping {
         return result;
     }
 
+    public class SortReferenceMapping implements Comparator<ReferenceMapping> {
+        public int booleanToNumber(boolean b) {
+            return b ? 1 : 0;
+        }
+    
+        public int compare(ReferenceMapping a, ReferenceMapping b) {
+            return a.hashCode() - b.hashCode();
+        }   
+    }
+
 }
+
