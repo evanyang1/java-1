@@ -146,10 +146,8 @@ public class Parse {
                     ArrayList<ReferenceMapping> copy = (ArrayList<ReferenceMapping>) entry.getValue();
                     Collections.sort(copy, (ReferenceMapping r1, ReferenceMapping r2) -> r1.hashCode() - r2.hashCode());
                     for (int i = 0; i < copy.size() - 1; i++) {
-                        for (int j = i + 1; j < copy.size(); j++) {
-                            if (copy.get(i).equals( copy.get(j) )) {
-                                setDuplicates2.add(copy.get(i));
-                            }
+                        if (copy.get(i).equals(copy.get(i + 1))) {
+                            setDuplicates2.add(copy.get(i));
                         }
                     }
                     numDuplicates2 += (setDuplicates2.size() - curSizeHashSet);
