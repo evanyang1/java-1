@@ -127,16 +127,44 @@ public class Parse {
             }
             out.println("------ Data Source 1 Statistics ------");
             out.println("Total number of ref mapping items: " + numElements1);
-            out.println("Total duplicate items: " + numDuplicates1);
+            out.println("Total duplicate items: " + numDuplicates1 + "\n");
 
 
             out.println("======================================");
             out.println("------ Data Source 2 Statistics ------");
+            HashSet<ReferenceMapping> setDuplicates2 = new HashSet<>();
+            int numDuplicates2 = 0;
+            int numElements2 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map2.entrySet()) {
-                System.out.println(entry.getKey());
-                System.out.println(entry.getValue());
-
+                numElements2 += entry.getValue().size();
+                if (entry.getValue().size() > 1) {
+                    // check for duplicates
+                    int curSizeHashSet = setDuplicates2.size();
+                    ArrayList<ReferenceMapping> copy = (ArrayList<ReferenceMapping>) entry.getValue();
+                    //Collections.sort(copy, null);
+                    for (int i = 0; i < copy.size() - 1; i++) {
+                        for (int j = i + 1; j < copy.size(); j++) {
+                            if (copy.get(i).equals( copy.get(j) )) {
+                                setDuplicates2.add(copy.get(i));
+                            }
+                        }
+                    }
+                    numDuplicates2 += (setDuplicates2.size() - curSizeHashSet);
+                }
             }
+            out.println("Total number of ref mapping items: " + numElements2);
+            out.println("Total duplicate items: " + numDuplicates2);
+
+            out.println("\n**************************************");
+            out.println("Detailed Report: \n");
+            out.println("======================================");
+            
+
+
+
+
+
+
 
             out.close();
         } catch(Exception e) {
