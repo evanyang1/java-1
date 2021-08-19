@@ -114,12 +114,15 @@ public class Parse {
                     // check for duplicates
                     int curSizeHashSet = setDuplicates1.size();
                     ArrayList<ReferenceMapping> copy = (ArrayList<ReferenceMapping>) entry.getValue();
-                    //Collections.sort(copy, null);
+                    Collections.sort(copy, (ReferenceMapping r1, ReferenceMapping r2) -> r1.hashCode() - r2.hashCode());
                     for (int i = 0; i < copy.size() - 1; i++) {
-                        for (int j = i + 1; j < copy.size(); j++) {
-                            if (copy.get(i).equals( copy.get(j) )) {
-                                setDuplicates1.add(copy.get(i));
-                            }
+                        // for (int j = i + 1; j < copy.size(); j++) {
+                        //     if (copy.get(i).equals( copy.get(j) )) {
+                        //         setDuplicates1.add(copy.get(i));
+                        //     }
+                        // }
+                        if (copy.get(i).equals(copy.get(i + 1))) {
+                            setDuplicates1.add(copy.get(i));
                         }
                     }
                     numDuplicates1 += (setDuplicates1.size() - curSizeHashSet);
@@ -141,7 +144,7 @@ public class Parse {
                     // check for duplicates
                     int curSizeHashSet = setDuplicates2.size();
                     ArrayList<ReferenceMapping> copy = (ArrayList<ReferenceMapping>) entry.getValue();
-                    //Collections.sort(copy, null);
+                    Collections.sort(copy, (ReferenceMapping r1, ReferenceMapping r2) -> r1.hashCode() - r2.hashCode());
                     for (int i = 0; i < copy.size() - 1; i++) {
                         for (int j = i + 1; j < copy.size(); j++) {
                             if (copy.get(i).equals( copy.get(j) )) {

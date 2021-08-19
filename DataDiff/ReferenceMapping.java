@@ -34,9 +34,9 @@ public class ReferenceMapping {
             return false;
         ReferenceMapping rm = (ReferenceMapping) obj;
         return rm.getActive() == this.getActive()
-                && rm.getConsumerType() == this.getConsumerType()
-                && rm.get_ct_code() == this.get_ct_code()
-                && rm.getValue() == this.getValue();
+                && rm.getConsumerType().equals(this.getConsumerType())
+                && rm.get_ct_code().equals(this.get_ct_code()) 
+                && rm.getValue().equals(this.getValue()) ;
     }
 
     @Override
