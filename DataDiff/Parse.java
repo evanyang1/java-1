@@ -31,7 +31,7 @@ public class Parse {
         
         HashMap<String, ArrayList<ReferenceMapping>> map1 = new HashMap<>();
         HashMap<String, ArrayList<ReferenceMapping>> map2 = new HashMap<>();
-
+        // data extraction
         try {
             // xml file
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -102,11 +102,12 @@ public class Parse {
             e.printStackTrace();
         }
 
+        // output 
         try {
             PrintWriter out = new PrintWriter("output.txt");
             out.println("======================================");
             HashSet<ReferenceMapping> setDuplicates1 = new HashSet<>();
-            int numDuplicates1 = 0;
+            int numDuplicates1 = 0, numUnique1 = 0;
             int numElements1 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
                 numElements1 += entry.getValue().size();
@@ -127,10 +128,24 @@ public class Parse {
                     }
                     numDuplicates1 += (setDuplicates1.size() - curSizeHashSet);
                 }
+                // check elements not in data source 2
+                if ( !map2.containsKey(entry.getKey()) ) numUnique1 += entry.getValue().size(); 
+                else if( map2.get(entry.getKey()) != null ) {
+                    ArrayList<ReferenceMapping> val = (ArrayList<ReferenceMapping>) map2.get(entry.getKey());
+                    for (int z = 0; z < entry.getValue().size(); z++) {
+                        if ( !val.contains(entry.getValue().get(z))){
+                            numUnique1++;
+                            System.out.println(val);
+                            System.out.println(entry.getValue().get(z));
+                        } 
+                    }
+
+                }
             }
             out.println("------ Data Source 1 Statistics ------");
             out.println("Total number of ref mapping items: " + numElements1);
-            out.println("Total duplicate items: " + numDuplicates1 + "\n");
+            out.println("Total duplicate items: " + numDuplicates1);
+            out.println("Number of codes only in Data Source 1: " + numUnique1);
 
 
             out.println("======================================");

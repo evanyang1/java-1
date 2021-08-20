@@ -2,7 +2,7 @@
 ------ Data Source 1 Statistics ------
 Total number of ref mapping items: 11
 Total duplicate items: 1
-
+Number of codes only in Data Source 1: 8
 ======================================
 ------ Data Source 2 Statistics ------
 Total number of ref mapping items: 10
