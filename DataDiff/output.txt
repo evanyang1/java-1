@@ -43,3 +43,23 @@ ConsumerType: CT2
     Code: CT2_Code3
         DataSource1:    value=Value9
         DataSource2:    value=Value3
+======================================
+------ 2 number of codes only appear in Data Source 1, grouped by consumer type
+ConsumerType: CT2
+    Code=CT2_Code5
+    Code=CT2_Code4
+======================================
+
+------ 1 number of codes only appear in Data Source 2, grouped by consumer type
+ConsumerType: CT1
+    Code=CT1_Code6
+======================================
+
+------ 1 number of codes that are duplicates in Data Source 1
+ConsumerType: CT2
+    Code=CT2_Code5, value=Value5, activeID=true
+======================================
+
+------ 1 number of codes that are duplicates in Data Source 1
+ConsumerType: CT1
+    Code=CT1_Code1, value=Value1, activeID=true

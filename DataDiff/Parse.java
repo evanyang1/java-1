@@ -339,9 +339,94 @@ public class Parse {
                 );
                 iter++;
             }
-            
+            out.println("======================================");
             // codes only in data source 1
+            out.println("------ " + setOnly1.size() + " number of codes only appear in Data Source 1, grouped by consumer type");
+            ArrayList<ReferenceMapping> setOnly1_ct1 = new ArrayList<>(), setOnly1_ct2 = new ArrayList<>();
+            for (var rm : setOnly1) {
+                if (rm.getConsumerType().equals("CT1")) setOnly1_ct1.add(rm);
+                else setOnly1_ct2.add(rm);
+            }
+            if (setOnly1_ct1.size() > 0){
+                out.println("ConsumerType: CT1");
+                for (var rm : setOnly1_ct1) {
+                    out.println(tab + "Code=" + rm.get_ct_code());
+                }
+            }
+            if (setOnly1_ct2.size() > 0){
+                out.println("ConsumerType: CT2");
+                for (var rm : setOnly1_ct2) {
+                    out.println(tab + "Code=" + rm.get_ct_code());
+                }
+            }
+            out.println("======================================");
+            out.println("");
+            // codes only in data source 2
+            out.println("------ " + setOnly2.size() + " number of codes only appear in Data Source 2, grouped by consumer type");
+            ArrayList<ReferenceMapping> setOnly2_ct1 = new ArrayList<>(), setOnly2_ct2 = new ArrayList<>();
+            for (var rm : setOnly2) {
+                if (rm.getConsumerType().equals("CT1")) setOnly2_ct1.add(rm);
+                else setOnly2_ct2.add(rm);
+            }
+            if (setOnly2_ct1.size() > 0){
+                out.println("ConsumerType: CT1");
+                for (var rm : setOnly2_ct1) {
+                    out.println(tab + "Code=" + rm.get_ct_code());
+                }
+            }
+            if (setOnly2_ct2.size() > 0){
+                out.println("ConsumerType: CT2");
+                for (var rm : setOnly2_ct2) {
+                    out.println(tab + "Code=" + rm.get_ct_code());
+                }
+            }
+            out.println("======================================");
+            out.println("");
             
+            // print duplicates: 1
+            out.println("------ " + setDuplicates1.size() + " number of codes that are duplicates in Data Source 1");
+            ArrayList<ReferenceMapping> setDup1_ct1 = new ArrayList<>(), setDup1_ct2 = new ArrayList<>();
+            for (var rm : setDuplicates1) {
+                if (rm.getConsumerType().equals("CT1")) setDup1_ct1.add(rm);
+                else setDup1_ct2.add(rm);
+            }
+            if (setDup1_ct1.size() > 0){
+                out.println("ConsumerType: CT1");
+                for (var rm : setDup1_ct1) {
+                    out.println(tab + "Code=" + rm.get_ct_code() + ", value=" + rm.getValue()
+                        + ", activeID=" + rm.getActive());
+                }
+            }
+            if (setDup1_ct2.size() > 0){
+                out.println("ConsumerType: CT2");
+                for (var rm : setDup1_ct2) {
+                    out.println(tab + "Code=" + rm.get_ct_code() + ", value=" + rm.getValue()
+                        + ", activeID=" + rm.getActive());
+                }
+            }
+            out.println("======================================");
+            out.println("");
+            // print duplicates: 2
+            out.println("------ " + setDuplicates2.size() + " number of codes that are duplicates in Data Source 1");
+            ArrayList<ReferenceMapping> setDup2_ct1 = new ArrayList<>(), setDup2_ct2 = new ArrayList<>();
+            for (var rm : setDuplicates2) {
+                if (rm.getConsumerType().equals("CT1")) setDup2_ct1.add(rm);
+                else setDup2_ct2.add(rm);
+            }
+            if (setDup2_ct1.size() > 0){
+                out.println("ConsumerType: CT1");
+                for (var rm : setDup2_ct1) {
+                    out.println(tab + "Code=" + rm.get_ct_code() + ", value=" + rm.getValue()
+                        + ", activeID=" + rm.getActive());
+                }
+            }
+            if (setDup2_ct2.size() > 0){
+                out.println("ConsumerType: CT2");
+                for (var rm : setDup2_ct2) {
+                    out.println(tab + "Code=" + rm.get_ct_code() + ", value=" + rm.getValue()
+                        + ", activeID=" + rm.getActive());
+                }
+            }
 
 
 
