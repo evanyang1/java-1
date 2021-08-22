@@ -15,19 +15,24 @@ Detailed Report:
 ======================================
 ------ 3 number of codes with both different value and activeId, list them grouped by consumerType
 ConsumerType: CT1
-     Code: CT1_Code2
-          DataSource1:     activeId=Y
-          DataSource2:     activeId=N
-          DataSource1:     value=Value2
-          DataSource2:     value=Value9
-     Code: CT1_Code4
-          DataSource1:     activeId=N
-          DataSource2:     activeId=Y
-          DataSource1:     value=Value4
-          DataSource2:     value=Value9
-ConsumerType: CT2
-     Code: CT2_Code2
-          DataSource1:     activeId=Y
-          DataSource2:     activeId=N
-          DataSource1:     value=Value2
-          DataSource2:     value=Value9
+    Code: CT1_Code2
+        DataSource1:    activeId=Y
+        DataSource2:    activeId=N
+        DataSource1:    value=Value2
+        DataSource2:    value=Value9
+    Code: CT1_Code4
+        DataSource1:    activeId=N
+        DataSource2:    activeId=Y
+        DataSource1:    value=Value4
+        DataSource2:    value=Value9
+    Code: CT2_Code2
+        DataSource1:    activeId=Y
+        DataSource2:    activeId=N
+        DataSource1:    value=Value2
+        DataSource2:    value=Value9
+======================================
+------ 1 number of codes with same value and different activeId, list them grouped by consumerType
+ConsumerType: CT1
+    Code: CT1_Code3
+        DataSource1:    activeId=Y
+        DataSource2:    activeId=N

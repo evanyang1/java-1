@@ -213,7 +213,7 @@ public class Parse {
                 );
                 iter++;
             }
-            out.println("ConsumerType: CT2");
+            if (iter < sameCodeDifferentActiveIDAndValue1.size() - 1) out.println("ConsumerType: CT2");
             for (; iter < sameCodeDifferentActiveIDAndValue1.size(); iter++) {
                 out.println(tab + "Code: " +
                     sameCodeDifferentActiveIDAndValue1.get(iter).get_ct_code()
@@ -231,9 +231,56 @@ public class Parse {
                     sameCodeDifferentActiveIDAndValue2.get(iter).getValue()
                 );
             }
-
-
-
+            //same value but different activeId, grouped by consumerType
+            ArrayList<ReferenceMapping> sameValue1 = new ArrayList<>(), sameValue2 = new ArrayList<>();
+            for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
+                if ( map2.containsKey(entry.getKey())) {
+                    
+                    ArrayList<ReferenceMapping> ar1 = entry.getValue();
+                    ArrayList<ReferenceMapping> ar2 = map2.get(entry.getKey());
+                    ReferenceMapping rm1 = ar1.get(0); // if more than 1 element, it's a duplicate anyways
+                    ReferenceMapping rm2 = ar2.get(0);
+                    if ( rm1.getValue().equals(rm2.getValue()) && rm1.getActive() != rm2.getActive()) {
+                        if (rm1.getConsumerType().equals("CT1")) {
+                            sameValue1.add(0, rm1);
+                            sameValue2.add(0, rm2);
+                        } else {
+                            sameValue1.add(rm1);
+                            sameValue2.add(rm2);
+                        }
+                        
+                    }
+                }
+            }
+            iter = 0;
+            out.println("======================================");
+            out.println("------ " + sameValue1.size() + " number of codes with same value and different activeId, list them grouped by consumerType");
+            out.println("ConsumerType: CT1");
+            while(iter < sameValue1.size() && sameValue1.get(iter).getConsumerType().equals("CT1")) {
+                out.println(tab + "Code: " +
+                    sameValue1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "activeId=" + 
+                    (sameValue1.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "activeId=" + 
+                    (sameValue2.get(iter).getActive() ? "Y" : "N")
+                );
+                iter++;
+            }
+            if (iter < sameValue1.size()) out.println("ConsumerType: CT2");
+            for (; iter < sameValue1.size(); iter++) {
+                out.println(tab + "Code: " +
+                    sameValue1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "activeId=" + 
+                    (sameValue1.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "activeId=" + 
+                    (sameValue2.get(iter).getActive() ? "Y" : "N")
+                );
+                iter++;
+            }
 
 
 
