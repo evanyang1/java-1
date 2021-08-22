@@ -2,13 +2,32 @@
 ------ Data Source 1 Statistics ------
 Total number of ref mapping items: 11
 Total duplicate items: 1
-Number of codes only in Data Source 1: 8
+Number of codes only in Data Source 1: 2
 ======================================
 ------ Data Source 2 Statistics ------
 Total number of ref mapping items: 10
 Total duplicate items: 1
+Number of codes only in Data Source 1: 1
 
 **************************************
 Detailed Report: 
 
 ======================================
+------ 3 number of codes with both different value and activeId, list them grouped by consumerType
+ConsumerType: CT1
+     Code: CT1_Code2
+          DataSource1:     activeId=Y
+          DataSource2:     activeId=N
+          DataSource1:     value=Value2
+          DataSource2:     value=Value9
+     Code: CT1_Code4
+          DataSource1:     activeId=N
+          DataSource2:     activeId=Y
+          DataSource1:     value=Value4
+          DataSource2:     value=Value9
+ConsumerType: CT2
+     Code: CT2_Code2
+          DataSource1:     activeId=Y
+          DataSource2:     activeId=N
+          DataSource1:     value=Value2
+          DataSource2:     value=Value9

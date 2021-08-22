@@ -107,7 +107,7 @@ public class Parse {
             PrintWriter out = new PrintWriter("output.txt");
             out.println("======================================");
             HashSet<ReferenceMapping> setDuplicates1 = new HashSet<>();
-            int numDuplicates1 = 0, numUnique1 = 0;
+            int numDuplicates1 = 0, numUniqueCodes1 = 0;
             int numElements1 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
                 numElements1 += entry.getValue().size();
@@ -129,29 +129,20 @@ public class Parse {
                     numDuplicates1 += (setDuplicates1.size() - curSizeHashSet);
                 }
                 // check elements not in data source 2
-                if ( !map2.containsKey(entry.getKey()) ) numUnique1 += entry.getValue().size(); 
-                else if( map2.get(entry.getKey()) != null ) {
-                    ArrayList<ReferenceMapping> val = (ArrayList<ReferenceMapping>) map2.get(entry.getKey());
-                    for (int z = 0; z < entry.getValue().size(); z++) {
-                        if ( !val.contains(entry.getValue().get(z))){
-                            numUnique1++;
-                            System.out.println(val);
-                            System.out.println(entry.getValue().get(z));
-                        } 
-                    }
-
-                }
+                if ( !map2.containsKey(entry.getKey()) ){
+                    numUniqueCodes1++;
+                } 
             }
             out.println("------ Data Source 1 Statistics ------");
             out.println("Total number of ref mapping items: " + numElements1);
             out.println("Total duplicate items: " + numDuplicates1);
-            out.println("Number of codes only in Data Source 1: " + numUnique1);
+            out.println("Number of codes only in Data Source 1: " + numUniqueCodes1);
 
 
             out.println("======================================");
             out.println("------ Data Source 2 Statistics ------");
             HashSet<ReferenceMapping> setDuplicates2 = new HashSet<>();
-            int numDuplicates2 = 0;
+            int numDuplicates2 = 0, numUniqueCodes2 = 0;
             int numElements2 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map2.entrySet()) {
                 numElements2 += entry.getValue().size();
@@ -167,14 +158,80 @@ public class Parse {
                     }
                     numDuplicates2 += (setDuplicates2.size() - curSizeHashSet);
                 }
+                // check elements not in data source 1
+                if ( !map1.containsKey(entry.getKey()) ){
+                    numUniqueCodes2++; 
+                } 
             }
             out.println("Total number of ref mapping items: " + numElements2);
             out.println("Total duplicate items: " + numDuplicates2);
+            out.println("Number of codes only in Data Source 1: " + numUniqueCodes2);
 
             out.println("\n**************************************");
             out.println("Detailed Report: \n");
             out.println("======================================");
-            
+            // print out same ct_code but different ActiveID AND value, sorted by CT number (1 or 2)
+            ArrayList<ReferenceMapping> sameCodeDifferentActiveIDAndValue1 = new ArrayList<ReferenceMapping>();
+            ArrayList<ReferenceMapping> sameCodeDifferentActiveIDAndValue2 = new ArrayList<ReferenceMapping>();
+            for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
+                if ( map2.containsKey(entry.getKey())) {
+                    ArrayList<ReferenceMapping> ar1 = entry.getValue();
+                    ArrayList<ReferenceMapping> ar2 = map2.get(entry.getKey());
+                    ReferenceMapping rm1 = ar1.get(0); // if more than 1 element, it's a duplicate anyways
+                    ReferenceMapping rm2 = ar2.get(0);
+                    if ( !rm1.getValue().equals(rm2.getValue()) && rm1.getActive() != rm2.getActive()) {
+                        if (rm1.getConsumerType().equals("CT1")) {
+                            sameCodeDifferentActiveIDAndValue1.add(0, rm1);
+                            sameCodeDifferentActiveIDAndValue2.add(0, rm2);
+                        } else {
+                            sameCodeDifferentActiveIDAndValue1.add(rm1);
+                            sameCodeDifferentActiveIDAndValue2.add(rm2);
+                        }
+                        
+                    }
+                }
+            }
+            out.println("------ " + sameCodeDifferentActiveIDAndValue1.size() + " number of codes with both different value and activeId, list them grouped by consumerType");
+            out.println("ConsumerType: CT1");
+            int iter = 0;
+            String tab = "    ";
+            while (sameCodeDifferentActiveIDAndValue1.get(iter).getConsumerType().equals("CT1")) {
+                out.println(tab + "Code: " +
+                    sameCodeDifferentActiveIDAndValue1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "activeId=" + 
+                    (sameCodeDifferentActiveIDAndValue1.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "activeId=" + 
+                    (sameCodeDifferentActiveIDAndValue2.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "value=" + 
+                    sameCodeDifferentActiveIDAndValue1.get(iter).getValue()
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "value=" + 
+                    sameCodeDifferentActiveIDAndValue2.get(iter).getValue()
+                );
+                iter++;
+            }
+            out.println("ConsumerType: CT2");
+            for (; iter < sameCodeDifferentActiveIDAndValue1.size(); iter++) {
+                out.println(tab + "Code: " +
+                    sameCodeDifferentActiveIDAndValue1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "activeId=" + 
+                    (sameCodeDifferentActiveIDAndValue1.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "activeId=" + 
+                    (sameCodeDifferentActiveIDAndValue2.get(iter).getActive() ? "Y" : "N")
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "value=" + 
+                    sameCodeDifferentActiveIDAndValue1.get(iter).getValue()
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "value=" + 
+                    sameCodeDifferentActiveIDAndValue2.get(iter).getValue()
+                );
+            }
+
 
 
 
