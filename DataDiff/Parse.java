@@ -106,7 +106,7 @@ public class Parse {
         try {
             PrintWriter out = new PrintWriter("output.txt");
             out.println("======================================");
-            HashSet<ReferenceMapping> setDuplicates1 = new HashSet<>();
+            HashSet<ReferenceMapping> setDuplicates1 = new HashSet<>(), setOnly1 = new HashSet<>();
             int numDuplicates1 = 0, numUniqueCodes1 = 0;
             int numElements1 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
@@ -130,6 +130,9 @@ public class Parse {
                 }
                 // check elements not in data source 2
                 if ( !map2.containsKey(entry.getKey()) ){
+                    for (var rm : entry.getValue()) {
+                        setOnly1.add(rm);
+                    }
                     numUniqueCodes1++;
                 } 
             }
@@ -141,7 +144,7 @@ public class Parse {
 
             out.println("======================================");
             out.println("------ Data Source 2 Statistics ------");
-            HashSet<ReferenceMapping> setDuplicates2 = new HashSet<>();
+            HashSet<ReferenceMapping> setDuplicates2 = new HashSet<>(), setOnly2 = new HashSet<>();
             int numDuplicates2 = 0, numUniqueCodes2 = 0;
             int numElements2 = 0;
             for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map2.entrySet()) {
@@ -160,6 +163,9 @@ public class Parse {
                 }
                 // check elements not in data source 1
                 if ( !map1.containsKey(entry.getKey()) ){
+                    for (var rm : entry.getValue()) {
+                        setOnly2.add(rm);
+                    }
                     numUniqueCodes2++; 
                 } 
             }
@@ -213,7 +219,7 @@ public class Parse {
                 );
                 iter++;
             }
-            if (iter < sameCodeDifferentActiveIDAndValue1.size() - 1) out.println("ConsumerType: CT2");
+            if (iter < sameCodeDifferentActiveIDAndValue1.size()) out.println("ConsumerType: CT2");
             for (; iter < sameCodeDifferentActiveIDAndValue1.size(); iter++) {
                 out.println(tab + "Code: " +
                     sameCodeDifferentActiveIDAndValue1.get(iter).get_ct_code()
@@ -281,8 +287,61 @@ public class Parse {
                 );
                 iter++;
             }
-
-
+            // same activeId, different values
+            ArrayList<ReferenceMapping> sameActive1 = new ArrayList<>(), sameActive2 = new ArrayList<>();
+            for (HashMap.Entry<String, ArrayList<ReferenceMapping>> entry : map1.entrySet()) {
+                if ( map2.containsKey(entry.getKey())) {
+                    
+                    ArrayList<ReferenceMapping> ar1 = entry.getValue();
+                    ArrayList<ReferenceMapping> ar2 = map2.get(entry.getKey());
+                    ReferenceMapping rm1 = ar1.get(0); // if more than 1 element, it's a duplicate anyways
+                    ReferenceMapping rm2 = ar2.get(0);
+                    if ( !rm1.getValue().equals(rm2.getValue()) && rm1.getActive() == rm2.getActive()) {
+                        if (rm1.getConsumerType().equals("CT1")) {
+                            sameActive1.add(0, rm1);
+                            sameActive2.add(0, rm2);
+                        } else {
+                            sameActive1.add(rm1);
+                            sameActive2.add(rm2);
+                        }
+                        
+                    }
+                }
+            }
+            iter = 0;
+            out.println("======================================");
+            out.println("------ " + sameActive1.size() + " number of codes with same activeID and different value, list them grouped by consumerType");
+            if (sameActive1.size() >= 1 && sameActive1.get(iter).getConsumerType().equals("CT1")){
+                out.println("ConsumerType: CT1");
+            }
+            while(iter < sameActive1.size() && sameActive1.get(iter).getConsumerType().equals("CT1")) {
+                out.println(tab + "Code: " +
+                    sameActive1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "value=" + 
+                    sameActive1.get(iter).getValue()
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "value=" + 
+                    sameActive2.get(iter).getValue()
+                );
+                iter++;
+            }
+            if (iter < sameActive1.size()) out.println("ConsumerType: CT2");
+            for (; iter < sameActive1.size(); iter++) {
+                out.println(tab + "Code: " +
+                    sameActive1.get(iter).get_ct_code()
+                );
+                out.println(tab + tab + "DataSource1:" + tab + "value=" + 
+                    sameActive1.get(iter).getValue()
+                );
+                out.println(tab + tab + "DataSource2:" + tab + "value=" + 
+                    sameActive2.get(iter).getValue()
+                );
+                iter++;
+            }
+            
+            // codes only in data source 1
+            
 
 
 

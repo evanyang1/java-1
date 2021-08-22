@@ -25,6 +25,7 @@ ConsumerType: CT1
         DataSource2:    activeId=Y
         DataSource1:    value=Value4
         DataSource2:    value=Value9
+ConsumerType: CT2
     Code: CT2_Code2
         DataSource1:    activeId=Y
         DataSource2:    activeId=N
@@ -36,3 +37,9 @@ ConsumerType: CT1
     Code: CT1_Code3
         DataSource1:    activeId=Y
         DataSource2:    activeId=N
+======================================
+------ 1 number of codes with same activeID and different value, list them grouped by consumerType
+ConsumerType: CT2
+    Code: CT2_Code3
+        DataSource1:    value=Value9
+        DataSource2:    value=Value3
